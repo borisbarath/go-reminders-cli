@@ -11,11 +11,11 @@ func main() {
 
 	flag.Usage = func() {
 		fmt.Println("usage: reminders add \"Reminder text\" [flags]")
+		fmt.Println("       reminders lists")
 		flag.PrintDefaults()
 	}
 
 	reminderList := flag.StringP("list", "l", "Reminders", "Specify a list on which to perform the operation")
-
 	flag.Parse()
 
 	if len(flag.Args()) < 1 {
@@ -23,18 +23,22 @@ func main() {
 	}
 
 	command := flag.Arg(0)
-
 	switch command {
 	case "add":
 		addReminder(*reminderList)
+	case "lists":
+		listReminderLists()
 	default:
-		fmt.Println("Error: Please enter a command (add)")
+		fmt.Println("Error: Please enter a command (add/list)")
 	}
+}
 
+func listReminderLists() {
+	remindersinterface.GetReminderListNames()
 }
 
 func addReminder(reminderList string) {
-	text := flag.Arg(1) // The only argument (that is not a flag option) is the file location (CSV file)
+	text := flag.Arg(1)
 	if len(text) == 0 {
 		fmt.Println("Please enter the reminder text")
 	} else {

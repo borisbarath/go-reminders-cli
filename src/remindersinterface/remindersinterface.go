@@ -6,6 +6,13 @@ import (
 	"github.com/andybrewer/mack"
 )
 
+func GetReminderListNames() {
+	listCommand := `
+	get name of lists`
+	listNames, _ := mack.Tell("Reminders", listCommand)
+	fmt.Println(listNames)
+}
+
 func AddNewReminder(listName string, reminderText string) {
 	cmd := `
 	set myList to list "%s" 
