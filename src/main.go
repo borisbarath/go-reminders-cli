@@ -10,6 +10,7 @@ import (
 func main() {
 
 	flag.Usage = func() {
+		fmt.Println("usage: reminders add \"Reminder text\" [flags]")
 		flag.PrintDefaults()
 	}
 
