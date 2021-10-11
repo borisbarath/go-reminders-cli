@@ -7,5 +7,8 @@ go-reminders-cli is a simple Apple Reminders interface written in Go.
 To add a reminder [to a list of your choice] use:
 `go run src/main.go add "Milk" -l "Shopping list"`
 
-To show tthe lists of reminders, use:
+To show the lists of reminders, use:
 `$ go run src/main.go lists`
+
+Additional help can be found using: 
+`$ go run src/main.go --help`
