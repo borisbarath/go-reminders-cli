@@ -24,7 +24,7 @@ var (
 
 	done         = kingpin.Command("done", "Complete a reminder at the given index or matching the given text")
 	doneList     = done.Flag("list", "List in which to mark reminder as done").Default(DEFAULT_LIST).Short('l').String()
-	doneReminder = done.Flag("index or reminder text", "The index or text of the reminder to be marked as done").Default("").String()
+	doneReminder = done.Flag("text", "The text of the reminder to be marked as done").Default("").String()
 	doneIndex    = done.Arg("index", "List in which to mark reminder as done").Int()
 )
 
