@@ -2,35 +2,20 @@ package remindersinterface
 
 import (
 	"fmt"
+	"go_reminders/src/applescript"
 	"strings"
 
 	"github.com/andybrewer/mack"
 )
 
 func GetReminderListNames() {
-	listCommand := `
-	get name of lists
-	`
-	listNames, _ := mack.Tell("Reminders", listCommand)
+	listNames, _ := mack.Tell("Reminders", applescript.ReminderLists)
 	fmt.Println(listNames)
 }
 
 func GetRemindersFromList(listName string) {
-	cmdTemplate := `
-	set myList to list "%s"
-	tell myList
-		set names to name of reminders whose completed is false 
-		set listTexts to ""
-		set iterator to 0
-		repeat with reminderName in names 
-			set listTexts to listTexts & reminderName & "$next"
-			set iterator to iterator + 1
-		end repeat
-		listTexts
-	end tell
-	`
-	cmd := fmt.Sprintf(cmdTemplate, listName)
-	reminderNames, _ := mack.Tell("Reminders", cmd)
+	cmd := fmt.Sprintf(applescript.ListRemindersFrom, listName)
+	reminderNames, _ := applescript.TellReminders(cmd)
 	for index, reminderText := range strings.Split(reminderNames, "$next") {
 		if reminderText != "" {
 			fmt.Println(index, reminderText)
@@ -41,32 +26,21 @@ func GetRemindersFromList(listName string) {
 func Purge(listName string) {
 	cmd := ""
 	if listName == "all-lists" {
-		cmd = `
-		set myLists to name of every list
-		repeat with currList in myLists
-			tell list currList
-				delete (every reminder whose completed is true)
-			end tell
-		end repeat
-		`
+		cmd = applescript.DeleteAllDoneReminders
 	} else {
-		cmdTemplate := `
-		set myList to list "%s"
-		tell myList
-			delete (every reminder whose completed is true)
-		end tell
-		`
-		cmd = fmt.Sprintf(cmdTemplate, listName)
+		cmd = fmt.Sprintf(applescript.DeleteDoneRemindersFromList, listName)
 	}
-	mack.Tell("Reminders", cmd)
+	applescript.TellReminders(cmd)
+}
+
+func Done(doneList string, doneReminder string, doneIndex int) {
+	// TODO(borisbarath) match text to reminder text to mark as done
+	cmd := fmt.Sprintf(applescript.MarkReminderAsDone, doneList, doneIndex, doneReminder)
+	applescript.TellReminders(cmd)
 }
 
 func AddNewReminder(listName string, reminderText string) {
-	cmdTemplate := `
-	set myList to list "%s" 
-	tell myList
-		make new reminder at end with properties {name:"%s"}
-	end tell`
-	cmd := fmt.Sprintf(cmdTemplate, listName, reminderText)
-	mack.Tell("Reminders", cmd)
+
+	cmd := fmt.Sprintf(applescript.AddReminderToList, listName, reminderText)
+	applescript.TellReminders(cmd)
 }
