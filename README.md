@@ -3,6 +3,8 @@
 
 go-reminders-cli is a simple Apple Reminders interface written in Go. This is stil very much a WIP
 
+There are definitely other ways of creating a Apple Reminders CLI, namely using Swift or [JXA](https://developer.apple.com/library/archive/releasenotes/InterapplicationCommunication/RN-JavaScriptForAutomation/Articles/Introduction.html#//apple_r) (javascript for automation). I decided to use Go with the intent to learn a new language. The command skeletons are written in applescript they are run from golang using the [mack library](https://github.com/andybrewer/mack). 
+
 ## Usage
 
 Add a new reminder: `add [<flags>] <text>`
